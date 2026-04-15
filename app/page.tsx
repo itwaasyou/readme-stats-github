@@ -104,6 +104,12 @@ export default function Home() {
   const [debouncedRepo, setDebouncedRepo] = useState("readme-stats-github");
   const [typingText, setTypingText] = useState("The best coding assistant.");
   const [debouncedTypingText, setDebouncedTypingText] = useState("The best coding assistant.");
+  const [typingColor, setTypingColor] = useState("#3b82f6");
+  const [debouncedTypingColor, setDebouncedTypingColor] = useState("#3b82f6");
+  const [typingParticleColor, setTypingParticleColor] = useState("#ffffff");
+  const [debouncedTypingParticleColor, setDebouncedTypingParticleColor] = useState("#ffffff");
+  const [typingBackground, setTypingBackground] = useState("#0d1117");
+  const [debouncedTypingBackground, setDebouncedTypingBackground] = useState("#0d1117");
   const [theme, setTheme] = useState("shadow");
   const [copiedStats, setCopiedStats] = useState(false);
   const [copiedLangs, setCopiedLangs] = useState(false);
@@ -153,6 +159,27 @@ export default function Home() {
     return () => clearTimeout(handler);
   }, [typingText]);
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedTypingColor(typingColor);
+    }, 600);
+    return () => clearTimeout(handler);
+  }, [typingColor]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedTypingParticleColor(typingParticleColor);
+    }, 600);
+    return () => clearTimeout(handler);
+  }, [typingParticleColor]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedTypingBackground(typingBackground);
+    }, 600);
+    return () => clearTimeout(handler);
+  }, [typingBackground]);
+
   // Reset errors when username changes
   useEffect(() => {
     setImageErrors((prev) => ({
@@ -170,7 +197,7 @@ export default function Home() {
 
   useEffect(() => {
     setImageErrors((prev) => ({ ...prev, typing: false }));
-  }, [debouncedTypingText]);
+  }, [debouncedTypingText, debouncedTypingColor, debouncedTypingParticleColor, debouncedTypingBackground]);
 
   useEffect(() => {
     setMounted(true);
@@ -202,7 +229,7 @@ export default function Home() {
   const repoUrl = `${origin}/api/repo?username=${debouncedUsername}&repo=${debouncedRepo}&theme=${theme}`;
   const repoMarkdown = `![${debouncedRepo} Stats](${repoUrl})`;
 
-  const typingUrl = `${origin}/api/typing?lines=${encodeURIComponent(debouncedTypingText)}`;
+  const typingUrl = `${origin}/api/typing?lines=${encodeURIComponent(debouncedTypingText)}&theme=${theme}&color=${encodeURIComponent(debouncedTypingColor)}&particleColor=${encodeURIComponent(debouncedTypingParticleColor)}&background=${encodeURIComponent(debouncedTypingBackground)}`;
   const typingMarkdown = `![Typing SVG](${typingUrl})`;
 
   const handleCopy = async (text: string, setCopied: (val: boolean) => void) => {
@@ -379,6 +406,89 @@ export default function Home() {
                 placeholder="e.g. The best coding assistant."
               />
               <p className="text-xs text-gray-500 dark:text-gray-400">Separate lines with ;</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+              <div className="space-y-2">
+                <label
+                  htmlFor="typingColor"
+                  className="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"
+                >
+                  <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                  Font Color
+                </label>
+                <div className="flex items-center gap-3">
+                  <div className="relative overflow-hidden w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-700 shadow-sm">
+                    <input
+                      id="typingColor"
+                      type="color"
+                      value={typingColor}
+                      onChange={(e) => setTypingColor(e.target.value)}
+                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] p-0 border-0 cursor-pointer"
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    value={typingColor}
+                    onChange={(e) => setTypingColor(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all shadow-sm text-sm font-mono"
+                    placeholder="#000000"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="typingParticleColor"
+                  className="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"
+                >
+                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  Particle Color
+                </label>
+                <div className="flex items-center gap-3">
+                  <div className="relative overflow-hidden w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-700 shadow-sm">
+                    <input
+                      id="typingParticleColor"
+                      type="color"
+                      value={typingParticleColor}
+                      onChange={(e) => setTypingParticleColor(e.target.value)}
+                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] p-0 border-0 cursor-pointer"
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    value={typingParticleColor}
+                    onChange={(e) => setTypingParticleColor(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500 outline-none transition-all shadow-sm text-sm font-mono"
+                    placeholder="#ffffff"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="space-y-2 mt-4">
+              <label
+                htmlFor="typingBackground"
+                className="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"
+              >
+                <div className="w-3 h-3 rounded-full bg-gray-800 border border-gray-600"></div>
+                Background Color
+              </label>
+              <div className="flex items-center gap-3">
+                <div className="relative overflow-hidden w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-700 shadow-sm">
+                  <input
+                    id="typingBackground"
+                    type="color"
+                    value={typingBackground}
+                    onChange={(e) => setTypingBackground(e.target.value)}
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] p-0 border-0 cursor-pointer"
+                  />
+                </div>
+                <input
+                  type="text"
+                  value={typingBackground}
+                  onChange={(e) => setTypingBackground(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 focus:ring-2 focus:ring-gray-500/50 focus:border-gray-500 outline-none transition-all shadow-sm text-sm font-mono"
+                  placeholder="#0d1117"
+                />
+              </div>
             </div>
           </StatsCard>
         </div>
