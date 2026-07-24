@@ -45,6 +45,7 @@
   },
 
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260722.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^25",
     "@types/react": "^19",
